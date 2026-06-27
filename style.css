@@ -1,0 +1,426 @@
+/* ===========================================
+   IRIAM Header Maker
+=========================================== */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+
+    background:#1f1f24;
+
+    color:#ffffff;
+
+    font-family:
+    "Hiragino Sans",
+    "Yu Gothic",
+    sans-serif;
+
+}
+
+/* ===========================================
+   レイアウト
+=========================================== */
+
+.container{
+
+    display:flex;
+
+    gap:40px;
+
+    align-items:flex-start;
+
+    justify-content:center;
+
+    padding:30px;
+
+    flex-wrap:wrap;
+
+}
+
+/* ===========================================
+   左メニュー
+=========================================== */
+
+.controls{
+
+    width:330px;
+
+    background:#2d2d33;
+
+    border-radius:18px;
+
+    padding:25px;
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.35);
+
+}
+
+.controls h1{
+
+    font-size:24px;
+
+    margin-bottom:30px;
+
+}
+
+.controls section{
+
+    margin-bottom:30px;
+
+}
+
+.controls h2{
+
+    font-size:18px;
+
+    margin-bottom:12px;
+
+}
+
+/* ===========================================
+   キャラクター
+=========================================== */
+
+.character-list{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(2,1fr);
+
+    gap:10px;
+
+}
+
+.character-btn{
+
+    height:52px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#444;
+
+    color:white;
+
+    font-size:16px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+.character-btn:hover{
+
+    background:#5fbf6f;
+
+}
+
+.character-btn.active{
+
+    background:#39c56b;
+
+    font-weight:bold;
+
+}
+
+/* ===========================================
+   入力欄
+=========================================== */
+
+input[type=text],
+input[type=number]{
+
+    width:100%;
+
+    margin-top:8px;
+
+    padding:10px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:#3b3b43;
+
+    color:white;
+
+    font-size:16px;
+
+}
+
+input[type=checkbox]{
+
+    margin-right:8px;
+
+    transform:scale(1.2);
+
+}
+
+/* ===========================================
+   ボタン
+=========================================== */
+
+#downloadBtn{
+
+    width:100%;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#38c172;
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+    transition:.2s;
+
+}
+
+#downloadBtn:hover{
+
+    background:#2faa61;
+
+}
+
+/* ===========================================
+   プレビュー
+=========================================== */
+
+.preview-wrapper{
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+}
+
+/* 実際のヘッダー */
+
+#preview{
+
+    position:relative;
+
+    width:1200px;
+
+    height:300px;
+
+    overflow:hidden;
+
+    background:black;
+
+    border-radius:16px;
+
+    box-shadow:
+    0 10px 35px rgba(0,0,0,.5);
+
+}
+
+/* ===========================================
+   画像
+=========================================== */
+
+.background{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+/* キャラクター */
+
+.character{
+
+    position:absolute;
+
+    left:0;
+
+    bottom:0;
+
+    height:100%;
+
+    object-fit:contain;
+
+}
+
+/* 装飾 */
+
+.overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    pointer-events:none;
+
+}
+
+/* ===========================================
+   日付
+=========================================== */
+
+.date-text{
+
+    position:absolute;
+
+    top:28px;
+
+    right:70px;
+
+    font-size:52px;
+
+    color:white;
+
+    font-weight:bold;
+
+    text-shadow:
+
+    0 0 12px rgba(0,0,0,.6);
+
+}
+
+/* ===========================================
+   バッジ文
+=========================================== */
+
+.badge-text{
+
+    position:absolute;
+
+    bottom:36px;
+
+    right:70px;
+
+    width:520px;
+
+    text-align:center;
+
+    font-size:42px;
+
+    line-height:1.35;
+
+    color:white;
+
+    font-weight:bold;
+
+    text-shadow:
+
+    0 0 12px rgba(0,0,0,.7);
+
+}
+
+/* ===========================================
+   スマホ
+=========================================== */
+
+@media(max-width:1000px){
+
+    .container{
+
+        flex-direction:column;
+
+        align-items:center;
+
+    }
+
+    .controls{
+
+        width:95%;
+
+    }
+
+    #preview{
+
+        width:100%;
+
+        max-width:1200px;
+
+        aspect-ratio:4/1;
+
+        height:auto;
+
+    }
+
+    .date-text{
+
+        font-size:6vw;
+
+        right:6%;
+
+        top:7%;
+
+    }
+
+    .badge-text{
+
+        width:45%;
+
+        right:5%;
+
+        bottom:10%;
+
+        font-size:4vw;
+
+    }
+
+}
+
+/* ===========================================
+   小さいスマホ
+=========================================== */
+
+@media(max-width:600px){
+
+    .controls{
+
+        padding:18px;
+
+    }
+
+    .controls h1{
+
+        font-size:20px;
+
+    }
+
+    .character-list{
+
+        grid-template-columns:1fr;
+
+    }
+
+    #downloadBtn{
+
+        font-size:16px;
+
+    }
+
+}
