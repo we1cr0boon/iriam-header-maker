@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRIAM ヘッダー画像メーカー</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ===== 左側：設定 ===== -->
+
+    <div class="controls">
+
+        <h1>IRIAM ヘッダー画像メーカー</h1>
+
+        <section>
+
+            <h2>キャラクター</h2>
+
+            <div class="character-list">
+
+                <button class="character-btn active"
+                    data-image="assets/character/normal_sd_1.png">
+                    SD1
+                </button>
+
+                <button class="character-btn"
+                    data-image="assets/character/normal_sd_2.png">
+                    SD2
+                </button>
+
+                <button class="character-btn"
+                    data-image="assets/character/normal_sd_3.png">
+                    SD3
+                </button>
+
+                <button class="character-btn"
+                    data-image="assets/character/normal_sd_4.png">
+                    SD4
+                </button>
+
+                <button class="character-btn"
+                    data-image="assets/character/normal_sd_5.png">
+                    SD5
+                </button>
+
+            </div>
+
+        </section>
+
+        <section>
+
+            <h2>日付</h2>
+
+            <input
+                type="text"
+                id="dateInput"
+                value="2026.06"
+                placeholder="yyyy.MM">
+
+        </section>
+
+        <section>
+
+            <h2>表示内容</h2>
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    id="firstCheck">
+
+                初めて
+
+            </label>
+
+            <br><br>
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    id="continuousCheck">
+
+                連続
+
+            </label>
+
+            <input
+                type="number"
+                id="continuousValue"
+                value="12"
+                min="1">
+
+            ヶ月
+
+            <br><br>
+
+            <label>
+
+                <input
+                    type="checkbox"
+                    id="countCheck">
+
+                回数
+
+            </label>
+
+            <input
+                type="number"
+                id="countValue"
+                value="12"
+                min="1">
+
+            回目
+
+        </section>
+
+        <section>
+
+            <button id="downloadBtn">
+
+                PNG保存
+
+            </button>
+
+        </section>
+
+    </div>
+
+    <!-- ===== 右側：プレビュー ===== -->
+
+    <div class="preview-wrapper">
+
+        <div id="preview">
+
+            <!-- 背景 -->
+
+            <img
+                src="assets/background/background_1.png"
+                id="backgroundImage"
+                class="background">
+
+            <!-- キャラクター -->
+
+            <img
+                src="assets/character/normal_sd_1.png"
+                id="characterImage"
+                class="character">
+
+            <!-- オーバーレイ -->
+
+            <img
+                src="assets/overlay/overlay_1.png"
+                id="overlayImage"
+                class="overlay">
+
+            <!-- 日付 -->
+
+            <div id="dateText" class="date-text">
+
+                2026.06
+
+            </div>
+
+            <!-- バッジ文 -->
+
+            <div id="badgeText" class="badge-text">
+
+                いつもありがとう！<br>
+
+                これからもよろしくね！
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
