@@ -1,3 +1,5 @@
+alert("script.js 読み込み成功");
+
 // =======================================
 // IRIAM Header Maker
 // Part1
