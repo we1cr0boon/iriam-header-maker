@@ -1,159 +1,91 @@
-/* ===========================================
-   フォント
-=========================================== */
-
-@font-face{
-
-    font-family:"HeaderFont";
-
-    src:url("assets/font/Buildingsandundertherailwaytracks.otf");
-
-}
-
-/* ===========================================
-   共通
-=========================================== */
+/* ==========================================
+   IRIAM Header Maker Ver2
+========================================== */
 
 *{
-
     margin:0;
-
     padding:0;
-
     box-sizing:border-box;
-
 }
 
 body{
 
     font-family:sans-serif;
-
-    background:#edf1f4;
-
-    color:#333;
+    background:#f5f5f5;
 
 }
 
-img{
-
-    display:block;
-
-}
-
-/* ===========================================
-   レイアウト
-=========================================== */
-
-.app{
+.container{
 
     display:flex;
+    gap:24px;
 
-    flex-direction:column;
-
-    gap:20px;
-
-    padding:16px;
-
-    max-width:1600px;
-
-    margin:auto;
+    padding:24px;
 
 }
 
-/* ===========================================
-   操作パネル
-=========================================== */
+/* ===========================
+   左メニュー
+=========================== */
 
-.panel{
+.sidebar{
+
+    width:360px;
 
     background:white;
 
-    border-radius:18px;
+    border-radius:16px;
 
-    padding:20px;
-
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    padding:24px;
 
 }
 
-.panel h1{
+.sidebar h1{
 
-    font-size:28px;
-
-    margin-bottom:20px;
+    margin-bottom:24px;
 
 }
 
-.panel h2{
+.sidebar section{
 
-    font-size:18px;
-
-    margin:20px 0 10px;
+    margin-bottom:24px;
 
 }
 
-.panel section{
+.sidebar h2{
 
-    margin-bottom:16px;
+    margin-bottom:12px;
 
 }
 
-.panel input[type="month"],
+.sidebar label{
 
-.panel input[type="number"]{
+    display:block;
+
+    margin:12px 0;
+
+}
+
+.sidebar input[type="month"],
+.sidebar input[type="number"]{
 
     width:100%;
 
     padding:10px;
 
-    border-radius:10px;
-
-    border:1px solid #cccccc;
-
     margin-top:8px;
 
 }
 
-.panel label{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-
-}
-
-#downloadBtn{
-
-    width:100%;
-
-    margin-top:24px;
-
-    padding:14px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#43b581;
-
-    color:white;
-
-    font-size:16px;
-
-    cursor:pointer;
-
-}
-/* ===========================================
+/* ===========================
    キャラクター一覧
-=========================================== */
+=========================== */
 
 .character-list{
 
     display:grid;
 
-    grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+    grid-template-columns:repeat(2,1fr);
 
     gap:12px;
 
@@ -161,37 +93,23 @@ img{
 
 .character-card{
 
-    height:140px;
+    border:none;
 
     border-radius:12px;
 
     overflow:hidden;
 
-    background:#f5f5f5;
-
-    border:3px solid transparent;
-
     cursor:pointer;
 
-    position:relative;
+    background:#eeeeee;
 
-}
-
-.character-card.active{
-
-    border-color:#43b581;
+    aspect-ratio:1.6/1;
 
 }
 
 .character-card img{
 
-    position:absolute;
-
-    left:0;
-
-    top:0;
-
-    width:220%;
+    width:200%;
 
     height:100%;
 
@@ -199,51 +117,71 @@ img{
 
     object-position:left center;
 
+    display:block;
+
 }
 
-/* ===========================================
+.character-card.active{
+
+    outline:4px solid #46c98b;
+
+}
+
+/* ===========================
+   ボタン
+=========================== */
+
+#saveButton{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:#46c98b;
+
+    color:white;
+
+    font-size:18px;
+
+    cursor:pointer;
+
+}
+
+/* ===========================
    プレビュー
-=========================================== */
+=========================== */
 
 .preview-area{
 
-    overflow:auto;
-
-    background:white;
-
-    border-radius:18px;
-
-    padding:20px;
-
-    box-shadow:0 10px 25px rgba(0,0,0,.08);
+    flex:1;
 
 }
-
-.preview-scale{
-
-    width:max-content;
-
-    transform-origin:top left;
-
-}
-
-/* 元画像サイズ */
 
 #preview{
 
     position:relative;
 
-    width:2560px;
+    width:100%;
 
-    height:1092px;
+    aspect-ratio:2560/1092;
+
+    background:black;
+
+    overflow:hidden;
+
+    border-radius:16px;
 
 }
 
-/* ===========================================
-   レイヤー
-=========================================== */
+/* ===========================
+   背景
+=========================== */
 
-.layer{
+.background{
 
     position:absolute;
 
@@ -253,124 +191,94 @@ img{
 
     height:100%;
 
+    object-fit:cover;
+
 }
 
-/* ===========================================
-   日付
-=========================================== */
+/* ===========================
+   キャラクター
+=========================== */
+
+.character{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+}
+
+/* ===========================
+   オーバーレイ
+=========================== */
+
+.overlay{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    pointer-events:none;
+
+}
+
+/* ===========================
+   テキスト
+=========================== */
 
 .date-text{
 
     position:absolute;
 
-    right:170px;
+    top:28px;
 
-    top:85px;
-
-    z-index:10;
+    right:42px;
 
     color:white;
 
-    font-family:"HeaderFont",sans-serif;
-
-    font-size:78px;
-
-    text-shadow:0 4px 12px rgba(0,0,0,.35);
-
 }
-
-/* ===========================================
-   バッジ
-=========================================== */
 
 .badge-text{
 
     position:absolute;
 
-    right:160px;
+    left:1550px;
 
-    bottom:120px;
-
-    width:850px;
-
-    text-align:right;
-
-    z-index:10;
+    top:820px;
 
     color:white;
 
-    font-family:"HeaderFont",sans-serif;
-
-    font-size:72px;
-
-    line-height:1.3;
-
-    text-shadow:0 4px 12px rgba(0,0,0,.35);
+    text-align:center;
 
 }
 
-/* ===========================================
-   PC
-=========================================== */
-
-@media (min-width:1100px){
-
-    .app{
-
-        flex-direction:row;
-
-        align-items:flex-start;
-
-    }
-
-    .panel{
-
-        width:340px;
-
-        position:sticky;
-
-        top:20px;
-
-    }
-
-    .preview-scale{
-
-        transform:scale(.42);
-
-    }
-
-}
-
-/* ===========================================
-   タブレット
-=========================================== */
-
-@media (min-width:700px) and (max-width:1099px){
-
-    .preview-scale{
-
-        transform:scale(.28);
-
-    }
-
-}
-
-/* ===========================================
+/* ===========================
    スマホ
-=========================================== */
+=========================== */
 
-@media (max-width:699px){
+@media(max-width:900px){
 
-    .character-list{
+.container{
 
-        grid-template-columns:repeat(3,1fr);
+    flex-direction:column;
 
-    }
+}
 
-    .preview-scale{
+.sidebar{
 
-        transform:scale(.13);
+    width:100%;
 
-    }
+}
 
 }
