@@ -1,3 +1,13 @@
+fetch("assets/list.json")
+  .then(res => res.json())
+  .then(data => {
+    console.log(data);
+    alert("list.json 読み込み成功！");
+  })
+  .catch(err => {
+    console.error(err);
+    alert("list.json 読み込み失敗");
+  });
 /* ==========================================
    IRIAM Header Maker
    Version 2
