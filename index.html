@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,56 +16,23 @@
 
 <body>
 
-<div class="container">
+<div class="app">
 
-    <!--==========================
-        左側メニュー
-    ==========================-->
+    <!-- ==========================
+         操作パネル
+    =========================== -->
 
-    <aside class="sidebar">
+    <aside class="panel">
 
-        <h1>IRIAM<br>Header Maker</h1>
+        <h1>IRIAM Header Maker</h1>
 
         <section>
 
             <h2>キャラクター</h2>
 
-            <div class="character-list">
+            <div id="characterList" class="character-list">
 
-                <button class="character-btn active"
-                        data-image="assets/character/normal_sd_1.png">
-
-                    <img src="assets/character/normal_sd_1.png">
-
-                </button>
-
-                <button class="character-btn"
-                        data-image="assets/character/normal_sd_2.png">
-
-                    <img src="assets/character/normal_sd_2.png">
-
-                </button>
-
-                <button class="character-btn"
-                        data-image="assets/character/normal_sd_3.png">
-
-                    <img src="assets/character/normal_sd_3.png">
-
-                </button>
-
-                <button class="character-btn"
-                        data-image="assets/character/normal_sd_4.png">
-
-                    <img src="assets/character/normal_sd_4.png">
-
-                </button>
-
-                <button class="character-btn"
-                        data-image="assets/character/normal_sd_5.png">
-
-                    <img src="assets/character/normal_sd_5.png">
-
-                </button>
+                <!-- JavaScriptで自動生成 -->
 
             </div>
 
@@ -74,8 +43,8 @@
             <h2>日付</h2>
 
             <input
-                id="dateInput"
-                type="month">
+                type="month"
+                id="dateInput">
 
         </section>
 
@@ -84,8 +53,8 @@
             <label>
 
                 <input
-                    id="firstCheck"
-                    type="checkbox">
+                    type="checkbox"
+                    id="firstCheck">
 
                 初めて
 
@@ -98,16 +67,16 @@
             <label>
 
                 <input
-                    id="continuousCheck"
-                    type="checkbox">
+                    type="checkbox"
+                    id="continuousCheck">
 
                 連続
 
             </label>
 
             <input
-                id="continuousValue"
                 type="number"
+                id="continuousValue"
                 value="12"
                 min="1">
 
@@ -118,16 +87,16 @@
             <label>
 
                 <input
-                    id="countCheck"
-                    type="checkbox">
+                    type="checkbox"
+                    id="countCheck">
 
                 回数
 
             </label>
 
             <input
-                id="countValue"
                 type="number"
+                id="countValue"
                 value="12"
                 min="1">
 
@@ -141,57 +110,62 @@
 
     </aside>
 
-    <!--==========================
-        プレビュー
-    ==========================-->
+    <!-- ==========================
+         プレビュー
+    =========================== -->
 
     <main class="preview-area">
 
-        <div id="preview">
+        <div class="preview-scale">
 
-            <img
+            <div id="preview">
 
-                id="backgroundImage"
+                <img
 
-                class="background"
+                    id="backgroundImage"
 
-                src="assets/background/background_1.png"
+                    class="layer"
 
-                alt="background">
+                    src="assets/background/background_1.png"
 
-            <img
+                    alt="background">
 
-                id="characterImage"
+                <img
 
-                class="character"
+                    id="characterImage"
 
-                src="assets/character/normal_sd_1.png"
+                    class="layer"
 
-                alt="character">
+                    src="assets/character/normal_sd_1.png"
 
-            <img
+                    alt="character">
 
-                id="overlayImage"
+                <img
 
-                class="overlay"
+                    id="overlayImage"
 
-                src="assets/overlay/overlay_1.png"
+                    class="layer"
 
-                alt="overlay">
-                            <div
-                id="dateText"
-                class="date-text">
+                    src="assets/overlay/overlay_1.png"
 
-                2026.06
+                    alt="overlay">
 
-            </div>
+                <div
+                    id="dateText"
+                    class="date-text">
 
-            <div
-                id="badgeText"
-                class="badge-text">
+                    2026.06
 
-                いつもありがとう！<br>
-                これからもよろしくね！
+                </div>
+
+                <div
+                    id="badgeText"
+                    class="badge-text">
+
+                    いつもありがとう！<br>
+                    これからもよろしくね！
+
+                </div>
 
             </div>
 
