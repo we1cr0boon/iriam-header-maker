@@ -1,22 +1,23 @@
-// ==========================================
-// IRIAM Header Maker Ver2
-// Part1 キャラクター機能
-// ==========================================
+/* ==========================================
+   IRIAM Header Maker Ver2
+   script.js
+========================================== */
 
-let config;
+let config = null;
+let currentCharacter = null;
 
-// ----------------------
-// 要素取得
-// ----------------------
+/* ===========================
+   要素取得
+=========================== */
 
 const characterList = document.getElementById("characterList");
 const characterImage = document.getElementById("characterImage");
 
-// ----------------------
-// 初期化
-// ----------------------
+/* ===========================
+   初期化
+=========================== */
 
-document.addEventListener("DOMContentLoaded", init);
+window.addEventListener("DOMContentLoaded", init);
 
 async function init() {
 
@@ -24,25 +25,28 @@ async function init() {
 
         const response = await fetch("assets/list.json");
 
+        if (!response.ok) {
+            throw new Error("list.json を読み込めません");
+        }
+
         config = await response.json();
 
-        createCharacterButtons();
+        createCharacterList();
 
     } catch (error) {
 
         console.error(error);
-
-        alert("list.json を読み込めませんでした");
+        alert("設定ファイルの読み込みに失敗しました。");
 
     }
 
 }
 
-// ----------------------
-// ボタン生成
-// ----------------------
+/* ===========================
+   キャラクター一覧生成
+=========================== */
 
-function createCharacterButtons() {
+function createCharacterList() {
 
     characterList.innerHTML = "";
 
@@ -52,37 +56,18 @@ function createCharacterButtons() {
 
         button.className = "character-card";
 
-        if (index === 0) {
+        button.dataset.index = index;
 
-            button.classList.add("active");
+        const img = document.createElement("img");
 
-            changeCharacter(character.file);
+        img.src = "assets/character/" + character.file;
+        img.alt = character.name;
 
-        }
-
-        const image = document.createElement("img");
-
-        image.src =
-            "assets/character/" + character.file;
-
-        image.alt =
-            character.name;
-
-        button.appendChild(image);
+        button.appendChild(img);
 
         button.addEventListener("click", () => {
 
-            changeCharacter(character.file);
-
-            document
-                .querySelectorAll(".character-card")
-                .forEach(card => {
-
-                    card.classList.remove("active");
-
-                });
-
-            button.classList.add("active");
+            selectCharacter(index);
 
         });
 
@@ -90,15 +75,27 @@ function createCharacterButtons() {
 
     });
 
+    selectCharacter(0);
+
 }
 
-// ----------------------
-// キャラクター変更
-// ----------------------
+/* ===========================
+   キャラクター切替
+=========================== */
 
-function changeCharacter(file) {
+function selectCharacter(index) {
+
+    currentCharacter = config.characters[index];
 
     characterImage.src =
-        "assets/character/" + file;
+        "assets/character/" + currentCharacter.file;
+
+    document
+        .querySelectorAll(".character-card")
+        .forEach(card => card.classList.remove("active"));
+
+    document
+        .querySelector(`.character-card[data-index="${index}"]`)
+        ?.classList.add("active");
 
 }
