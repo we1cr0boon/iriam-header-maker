@@ -51,18 +51,11 @@ function createCharacterList() {
 
         button.appendChild(image);
 
-        button.addEventListener("click", () => {
+button.onclick = function(){
 
-            selectCharacter(item.file);
+    selectCharacter(item.file);
 
-            document
-                .querySelectorAll(".character-card")
-                .forEach(card => card.classList.remove("active"));
-
-            button.classList.add("active");
-
-        });
-
+};
         list.appendChild(button);
 
     });
