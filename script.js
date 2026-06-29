@@ -1,18 +1,38 @@
-/* ==========================
-   要素取得
-========================== */
+/* ==========================================
+   IRIAM Header Maker
+   Version 2
+========================================== */
 
-const characterButtons =
-document.querySelectorAll(".character-btn");
+/* ==========================================
+   設定ファイル読込
+========================================== */
+
+let config = null;
+
+/* ==========================================
+   要素取得
+========================================== */
+
+const characterList =
+document.getElementById("characterList");
 
 const characterImage =
 document.getElementById("characterImage");
+
+const backgroundImage =
+document.getElementById("backgroundImage");
+
+const overlayImage =
+document.getElementById("overlayImage");
 
 const dateInput =
 document.getElementById("dateInput");
 
 const dateText =
 document.getElementById("dateText");
+
+const badgeText =
+document.getElementById("badgeText");
 
 const firstCheck =
 document.getElementById("firstCheck");
@@ -29,191 +49,144 @@ document.getElementById("continuousValue");
 const countValue =
 document.getElementById("countValue");
 
-const badgeText =
-document.getElementById("badgeText");
+const preview =
+document.getElementById("preview");
 
 const downloadBtn =
 document.getElementById("downloadBtn");
 
-const preview =
-document.getElementById("preview");
 
+/* ==========================================
+   初期化
+========================================== */
 
-/* ==========================
-   キャラクター変更
-========================== */
+async function initialize(){
 
-characterButtons.forEach(button=>{
+    const response =
+    await fetch("assets/list.json");
 
-    button.addEventListener("click",()=>{
+    config =
+    await response.json();
 
-        characterButtons.forEach(btn=>{
+    loadImages();
 
-            btn.classList.remove("active");
+    createCharacterList();
 
-        });
+    updateDate();
 
-        button.classList.add("active");
-
-        characterImage.src =
-        button.dataset.image;
-
-    });
-
-});
-
-
-/* ==========================
-   日付表示
-========================== */
-
-function updateDate(){
-
-    if(dateInput.value===""){
-
-        dateText.textContent="";
-
-        return;
-
-    }
-
-    dateText.textContent =
-    dateInput.value.replace("-",".");
+    updateBadge();
 
 }
 
-dateInput.addEventListener(
 
-    "change",
+/* ==========================================
+   固定画像
+========================================== */
 
-    updateDate
+function loadImages(){
 
-);
+    backgroundImage.src =
+    "assets/background/" +
+    config.background;
 
+    overlayImage.src =
+    "assets/overlay/" +
+    config.overlay;
 
-/* ==========================
-   バッジ文
-========================== */
-
-function updateBadge(){
-
-    if(firstCheck.checked){
-
-        badgeText.innerHTML="初めて";
-
-        return;
-
-    }
-
-    let text="";
-
-    if(continuousCheck.checked){
-
-        text +=
-
-        continuousValue.value +
-
-        "ヶ月連続";
-
-    }
-
-    if(countCheck.checked){
-
-        text +=
-
-        countValue.value +
-
-        "回目";
-
-    }
-
-    if(text===""){
-
-        badgeText.innerHTML=
-
-        "いつもありがとう！<br>これからもよろしくね！";
-
-    }
-
-    else{
-
-        badgeText.innerHTML=text;
-
-    }
-
-}/* ==========================
-   イベント登録
-========================== */
-
-firstCheck.addEventListener(
-    "change",
-    updateBadge
-);
-
-continuousCheck.addEventListener(
-    "change",
-    updateBadge
-);
-
-countCheck.addEventListener(
-    "change",
-    updateBadge
-);
-
-continuousValue.addEventListener(
-    "input",
-    updateBadge
-);
-
-countValue.addEventListener(
-    "input",
-    updateBadge
-);
+}
 
 
-/* ==========================
-   PNG保存
-========================== */
+/* ==========================================
+   キャラクター一覧
+========================================== */
 
-downloadBtn.addEventListener("click", () => {
+function createCharacterList(){
 
-    html2canvas(preview, {
+    characterList.innerHTML = "";
 
-        scale: 2,
+    config.characters.forEach(
 
-        useCORS: true,
+        (character,index)=>{
 
-        backgroundColor: null
+            const card =
+            document.createElement("div");
 
-    }).then(canvas => {
+            card.className =
+            "character-card";
 
-        const link = document.createElement("a");
+            if(index===0){
 
-        let fileName = dateText.textContent;
+                card.classList.add("active");
 
-        if (fileName === "") {
+            }
 
-            fileName = "header";
+            const image =
+            document.createElement("img");
+
+            image.src =
+            "assets/character/" +
+            character.file;
+
+            image.alt =
+            character.name;
+
+            card.appendChild(image);
+
+            card.addEventListener(
+
+                "click",
+
+                ()=>{
+
+                    selectCharacter(
+
+                        character.file,
+
+                        card
+
+                    );
+
+                }
+
+            );
+
+            characterList.appendChild(card);
 
         }
 
-        link.download =
-            "IRIAM_Header_" + fileName + ".png";
+    );
 
-        link.href =
-            canvas.toDataURL("image/png");
-
-        link.click();
-
-    });
-
-});
+}
 
 
-/* ==========================
-   初期表示
-========================== */
+/* ==========================================
+   キャラクター変更
+========================================== */
 
-updateDate();
+function selectCharacter(
 
-updateBadge();
+    file,
+
+    card
+
+){
+
+    characterImage.src =
+    "assets/character/" +
+    file;
+
+    document
+    .querySelectorAll(".character-card")
+    .forEach(
+
+        item=>{
+
+            item.classList.remove("active");
+
+        }
+
+    );
+
+    card.classList.add("active");
+
+}
