@@ -145,3 +145,232 @@ img{
     cursor:pointer;
 
 }
+/* ===========================================
+   キャラクター一覧
+=========================================== */
+
+.character-list{
+
+    display:grid;
+
+    grid-template-columns:repeat(auto-fill,minmax(110px,1fr));
+
+    gap:12px;
+
+}
+
+.character-card{
+
+    height:140px;
+
+    border-radius:12px;
+
+    overflow:hidden;
+
+    background:#f5f5f5;
+
+    border:3px solid transparent;
+
+    cursor:pointer;
+
+    position:relative;
+
+}
+
+.character-card.active{
+
+    border-color:#43b581;
+
+}
+
+.character-card img{
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:220%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    object-position:left center;
+
+}
+
+/* ===========================================
+   プレビュー
+=========================================== */
+
+.preview-area{
+
+    overflow:auto;
+
+    background:white;
+
+    border-radius:18px;
+
+    padding:20px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.08);
+
+}
+
+.preview-scale{
+
+    width:max-content;
+
+    transform-origin:top left;
+
+}
+
+/* 元画像サイズ */
+
+#preview{
+
+    position:relative;
+
+    width:2560px;
+
+    height:1092px;
+
+}
+
+/* ===========================================
+   レイヤー
+=========================================== */
+
+.layer{
+
+    position:absolute;
+
+    inset:0;
+
+    width:100%;
+
+    height:100%;
+
+}
+
+/* ===========================================
+   日付
+=========================================== */
+
+.date-text{
+
+    position:absolute;
+
+    right:170px;
+
+    top:85px;
+
+    z-index:10;
+
+    color:white;
+
+    font-family:"HeaderFont",sans-serif;
+
+    font-size:78px;
+
+    text-shadow:0 4px 12px rgba(0,0,0,.35);
+
+}
+
+/* ===========================================
+   バッジ
+=========================================== */
+
+.badge-text{
+
+    position:absolute;
+
+    right:160px;
+
+    bottom:120px;
+
+    width:850px;
+
+    text-align:right;
+
+    z-index:10;
+
+    color:white;
+
+    font-family:"HeaderFont",sans-serif;
+
+    font-size:72px;
+
+    line-height:1.3;
+
+    text-shadow:0 4px 12px rgba(0,0,0,.35);
+
+}
+
+/* ===========================================
+   PC
+=========================================== */
+
+@media (min-width:1100px){
+
+    .app{
+
+        flex-direction:row;
+
+        align-items:flex-start;
+
+    }
+
+    .panel{
+
+        width:340px;
+
+        position:sticky;
+
+        top:20px;
+
+    }
+
+    .preview-scale{
+
+        transform:scale(.42);
+
+    }
+
+}
+
+/* ===========================================
+   タブレット
+=========================================== */
+
+@media (min-width:700px) and (max-width:1099px){
+
+    .preview-scale{
+
+        transform:scale(.28);
+
+    }
+
+}
+
+/* ===========================================
+   スマホ
+=========================================== */
+
+@media (max-width:699px){
+
+    .character-list{
+
+        grid-template-columns:repeat(3,1fr);
+
+    }
+
+    .preview-scale{
+
+        transform:scale(.13);
+
+    }
+
+}
