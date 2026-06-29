@@ -1,4 +1,11 @@
 {
+  "version": "1.0",
+
+  "canvas": {
+    "width": 2560,
+    "height": 1092
+  },
+
   "background": "background_1.png",
 
   "overlay": "overlay_1.png",
