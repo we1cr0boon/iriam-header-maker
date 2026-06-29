@@ -1,41 +1,53 @@
-// ================================
-// 要素取得
-// ================================
+/* ==========================
+   要素取得
+========================== */
 
-const characterButtons = document.querySelectorAll(".character-btn");
+const characterButtons =
+document.querySelectorAll(".character-btn");
 
-const characterImage = document.getElementById("characterImage");
+const characterImage =
+document.getElementById("characterImage");
 
-const dateInput = document.getElementById("dateInput");
+const dateInput =
+document.getElementById("dateInput");
 
-const dateText = document.getElementById("dateText");
+const dateText =
+document.getElementById("dateText");
 
-const firstCheck = document.getElementById("firstCheck");
+const firstCheck =
+document.getElementById("firstCheck");
 
-const continuousCheck = document.getElementById("continuousCheck");
+const continuousCheck =
+document.getElementById("continuousCheck");
 
-const countCheck = document.getElementById("countCheck");
+const countCheck =
+document.getElementById("countCheck");
 
-const continuousValue = document.getElementById("continuousValue");
+const continuousValue =
+document.getElementById("continuousValue");
 
-const countValue = document.getElementById("countValue");
+const countValue =
+document.getElementById("countValue");
 
-const badgeText = document.getElementById("badgeText");
+const badgeText =
+document.getElementById("badgeText");
 
-const downloadBtn = document.getElementById("downloadBtn");
+const downloadBtn =
+document.getElementById("downloadBtn");
 
-const preview = document.getElementById("preview");
+const preview =
+document.getElementById("preview");
 
 
-// ================================
-// キャラクター切替
-// ================================
+/* ==========================
+   キャラクター変更
+========================== */
 
-characterButtons.forEach(button => {
+characterButtons.forEach(button=>{
 
-    button.addEventListener("click", () => {
+    button.addEventListener("click",()=>{
 
-        characterButtons.forEach(btn => {
+        characterButtons.forEach(btn=>{
 
             btn.classList.remove("active");
 
@@ -43,112 +55,125 @@ characterButtons.forEach(button => {
 
         button.classList.add("active");
 
-        characterImage.src = button.dataset.image;
+        characterImage.src =
+        button.dataset.image;
 
     });
 
 });
 
 
-// ================================
-// 日付更新
-// ================================
+/* ==========================
+   日付表示
+========================== */
 
-function updateDate() {
+function updateDate(){
 
-    let value = dateInput.value.trim();
+    if(dateInput.value===""){
 
-    value = value.replace("-", ".");
-
-    dateText.textContent = value;
-
-}
-
-dateInput.addEventListener("input", updateDate);
-
-
-// ================================
-// バッジ文章更新
-// ================================
-
-function updateBadgeText() {
-
-    // 初めて優先
-
-    if (firstCheck.checked) {
-
-        badgeText.innerHTML = "初めて";
+        dateText.textContent="";
 
         return;
 
     }
 
-    const texts = [];
-
-    if (continuousCheck.checked) {
-
-        texts.push(
-            continuousValue.value + "ヶ月連続"
-        );
-
-    }
-
-    if (countCheck.checked) {
-
-        texts.push(
-            countValue.value + "回目"
-        );
-
-    }
-
-    if (texts.length === 0) {
-
-        badgeText.innerHTML =
-            "いつもありがとう！<br>これからもよろしくね！";
-
-    } else {
-
-        badgeText.innerHTML =
-            texts.join("");
-
-    }
+    dateText.textContent =
+    dateInput.value.replace("-",".");
 
 }
 
+dateInput.addEventListener(
 
-// ================================
-// イベント登録
-// ================================
+    "change",
+
+    updateDate
+
+);
+
+
+/* ==========================
+   バッジ文
+========================== */
+
+function updateBadge(){
+
+    if(firstCheck.checked){
+
+        badgeText.innerHTML="初めて";
+
+        return;
+
+    }
+
+    let text="";
+
+    if(continuousCheck.checked){
+
+        text +=
+
+        continuousValue.value +
+
+        "ヶ月連続";
+
+    }
+
+    if(countCheck.checked){
+
+        text +=
+
+        countValue.value +
+
+        "回目";
+
+    }
+
+    if(text===""){
+
+        badgeText.innerHTML=
+
+        "いつもありがとう！<br>これからもよろしくね！";
+
+    }
+
+    else{
+
+        badgeText.innerHTML=text;
+
+    }
+
+}/* ==========================
+   イベント登録
+========================== */
 
 firstCheck.addEventListener(
     "change",
-    updateBadgeText
+    updateBadge
 );
 
 continuousCheck.addEventListener(
     "change",
-    updateBadgeText
+    updateBadge
 );
 
 countCheck.addEventListener(
     "change",
-    updateBadgeText
+    updateBadge
 );
 
 continuousValue.addEventListener(
     "input",
-    updateBadgeText
+    updateBadge
 );
 
 countValue.addEventListener(
     "input",
-    updateBadgeText
+    updateBadge
 );
 
 
-// ================================
-// PNG保存
-// ================================
+/* ==========================
+   PNG保存
+========================== */
 
 downloadBtn.addEventListener("click", () => {
 
@@ -164,7 +189,7 @@ downloadBtn.addEventListener("click", () => {
 
         const link = document.createElement("a");
 
-        let fileName = dateInput.value.trim();
+        let fileName = dateText.textContent;
 
         if (fileName === "") {
 
@@ -172,12 +197,11 @@ downloadBtn.addEventListener("click", () => {
 
         }
 
-        fileName = fileName.replace("-", ".");
-
         link.download =
-            "header_" + fileName + ".png";
+            "IRIAM_Header_" + fileName + ".png";
 
-        link.href = canvas.toDataURL("image/png");
+        link.href =
+            canvas.toDataURL("image/png");
 
         link.click();
 
@@ -186,10 +210,10 @@ downloadBtn.addEventListener("click", () => {
 });
 
 
-// ================================
-// 初期表示
-// ================================
+/* ==========================
+   初期表示
+========================== */
 
 updateDate();
 
-updateBadgeText();
+updateBadge();
