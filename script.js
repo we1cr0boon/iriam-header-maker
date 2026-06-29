@@ -12,6 +12,18 @@ let currentCharacter = null;
 
 const characterList = document.getElementById("characterList");
 const characterImage = document.getElementById("characterImage");
+const dateInput = document.getElementById("dateInput");
+
+const dateText = document.getElementById("dateText");
+const badgeText = document.getElementById("badgeText");
+
+const firstCheck = document.getElementById("firstCheck");
+const continueCheck = document.getElementById("continueCheck");
+
+const continueCount = document.getElementById("continueCount");
+
+const timesCheck = document.getElementById("timesCheck");
+const timesCount = document.getElementById("timesCount");
 
 /* ===========================
    初期化
@@ -32,6 +44,10 @@ async function init() {
         config = await response.json();
 
         createCharacterList();
+
+        // ↓↓↓ここを追加
+        initUI();
+        updateTexts();
 
     } catch (error) {
 
@@ -97,5 +113,106 @@ function selectCharacter(index) {
     document
         .querySelector(`.character-card[data-index="${index}"]`)
         ?.classList.add("active");
+
+}/* ===========================
+   UI初期化
+=========================== */
+
+function initUI(){
+
+    dateInput.addEventListener("input",updateTexts);
+
+    firstCheck.addEventListener("change",()=>{
+
+        if(firstCheck.checked){
+
+            continueCheck.checked=false;
+
+        }
+
+        updateTexts();
+
+    });
+
+    continueCheck.addEventListener("change",()=>{
+
+        if(continueCheck.checked){
+
+            firstCheck.checked=false;
+
+        }
+
+        updateTexts();
+
+    });
+
+    continueCount.addEventListener("input",updateTexts);
+
+    timesCheck.addEventListener("change",updateTexts);
+
+    timesCount.addEventListener("input",updateTexts);
+
+}
+
+
+/* ===========================
+   テキスト更新
+=========================== */
+
+function updateTexts(){
+
+    //----------------------
+    // 日付
+    //----------------------
+
+    if(dateInput.value){
+
+        const date=new Date(dateInput.value);
+
+        const y=date.getFullYear();
+
+        const m=String(date.getMonth()+1).padStart(2,"0");
+
+        dateText.textContent=`${y}.${m}`;
+
+    }
+
+    //----------------------
+    // バッジ文章
+    //----------------------
+
+    let text="";
+
+    if(firstCheck.checked){
+
+        text+="初めて";
+
+    }
+
+    if(continueCheck.checked){
+
+        text+=continueCount.value+"ヶ月連続";
+
+    }
+
+    if(timesCheck.checked){
+
+        if(text!==""){
+
+            text+="";
+
+        }
+
+        text+=timesCount.value+"回目";
+
+    }
+
+    if(text===""){
+
+        text="いつもありがとう！\nこれからもよろしくね！";
+
+    }
+
+    badgeText.innerHTML=text.replace(/\n/g,"<br>");
 
 }
