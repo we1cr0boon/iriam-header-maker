@@ -1,0 +1,28 @@
+{
+  "background": "background_1.png",
+
+  "overlay": "overlay_1.png",
+
+  "characters": [
+    {
+      "name": "SD1",
+      "file": "normal_sd_1.png"
+    },
+    {
+      "name": "SD2",
+      "file": "normal_sd_2.png"
+    },
+    {
+      "name": "SD3",
+      "file": "normal_sd_3.png"
+    },
+    {
+      "name": "SD4",
+      "file": "normal_sd_4.png"
+    },
+    {
+      "name": "SD5",
+      "file": "normal_sd_5.png"
+    }
+  ]
+}
