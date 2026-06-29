@@ -1,24 +1,28 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IRIAM ヘッダー画像メーカー</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <link rel="stylesheet" href="style.css">
+<title>IRIAM Header Maker</title>
 
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
 </head>
 
 <body>
 
 <div class="container">
 
-    <!-- ===== 左側：設定 ===== -->
+    <!--==========================
+        左側メニュー
+    ==========================-->
 
-    <div class="controls">
+    <aside class="sidebar">
 
-        <h1>IRIAM ヘッダー画像メーカー</h1>
+        <h1>IRIAM<br>Header Maker</h1>
 
         <section>
 
@@ -27,28 +31,38 @@
             <div class="character-list">
 
                 <button class="character-btn active"
-                    data-image="assets/character/normal_sd_1.png">
-                    SD1
+                        data-image="assets/character/normal_sd_1.png">
+
+                    <img src="assets/character/normal_sd_1.png">
+
                 </button>
 
                 <button class="character-btn"
-                    data-image="assets/character/normal_sd_2.png">
-                    SD2
+                        data-image="assets/character/normal_sd_2.png">
+
+                    <img src="assets/character/normal_sd_2.png">
+
                 </button>
 
                 <button class="character-btn"
-                    data-image="assets/character/normal_sd_3.png">
-                    SD3
+                        data-image="assets/character/normal_sd_3.png">
+
+                    <img src="assets/character/normal_sd_3.png">
+
                 </button>
 
                 <button class="character-btn"
-                    data-image="assets/character/normal_sd_4.png">
-                    SD4
+                        data-image="assets/character/normal_sd_4.png">
+
+                    <img src="assets/character/normal_sd_4.png">
+
                 </button>
 
                 <button class="character-btn"
-                    data-image="assets/character/normal_sd_5.png">
-                    SD5
+                        data-image="assets/character/normal_sd_5.png">
+
+                    <img src="assets/character/normal_sd_5.png">
+
                 </button>
 
             </div>
@@ -60,133 +74,135 @@
             <h2>日付</h2>
 
             <input
-                type="text"
                 id="dateInput"
-                value="2026.06"
-                placeholder="yyyy.MM">
+                type="month">
 
         </section>
 
         <section>
 
-            <h2>表示内容</h2>
-
             <label>
 
                 <input
-                    type="checkbox"
-                    id="firstCheck">
+                    id="firstCheck"
+                    type="checkbox">
 
                 初めて
 
             </label>
 
-            <br><br>
+        </section>
+
+        <section>
 
             <label>
 
                 <input
-                    type="checkbox"
-                    id="continuousCheck">
+                    id="continuousCheck"
+                    type="checkbox">
 
                 連続
 
             </label>
 
             <input
-                type="number"
                 id="continuousValue"
+                type="number"
                 value="12"
                 min="1">
 
-            ヶ月
+        </section>
 
-            <br><br>
+        <section>
 
             <label>
 
                 <input
-                    type="checkbox"
-                    id="countCheck">
+                    id="countCheck"
+                    type="checkbox">
 
                 回数
 
             </label>
 
             <input
-                type="number"
                 id="countValue"
+                type="number"
                 value="12"
                 min="1">
 
-            回目
-
         </section>
 
-        <section>
+        <button id="downloadBtn">
 
-            <button id="downloadBtn">
+            PNG保存
 
-                PNG保存
+        </button>
 
-            </button>
+    </aside>
 
-        </section>
+    <!--==========================
+        プレビュー
+    ==========================-->
 
-    </div>
-
-    <!-- ===== 右側：プレビュー ===== -->
-
-    <div class="preview-wrapper">
+    <main class="preview-area">
 
         <div id="preview">
 
-            <!-- 背景 -->
-
             <img
-                src="assets/background/background_1.png"
+
                 id="backgroundImage"
-                class="background">
 
-            <!-- キャラクター -->
+                class="background"
+
+                src="assets/background/background_1.png"
+
+                alt="background">
 
             <img
-                src="assets/character/normal_sd_1.png"
+
                 id="characterImage"
-                class="character">
 
-            <!-- オーバーレイ -->
+                class="character"
+
+                src="assets/character/normal_sd_1.png"
+
+                alt="character">
 
             <img
-                src="assets/overlay/overlay_1.png"
+
                 id="overlayImage"
-                class="overlay">
 
-            <!-- 日付 -->
+                class="overlay"
 
-            <div id="dateText" class="date-text">
+                src="assets/overlay/overlay_1.png"
+
+                alt="overlay">
+                            <div
+                id="dateText"
+                class="date-text">
 
                 2026.06
 
             </div>
 
-            <!-- バッジ文 -->
-
-            <div id="badgeText" class="badge-text">
+            <div
+                id="badgeText"
+                class="badge-text">
 
                 いつもありがとう！<br>
-
                 これからもよろしくね！
 
             </div>
 
         </div>
 
-    </div>
+    </main>
 
 </div>
 
 <script src="script.js"></script>
 
 </body>
+
 </html>
