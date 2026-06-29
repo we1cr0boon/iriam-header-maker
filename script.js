@@ -1,68 +1,29 @@
-alert("script.js 読み込み成功");
+alert("script.js開始");
 
-// =======================================
-// IRIAM Header Maker
-// Part1
-// キャラクター一覧だけ作る
-// =======================================
+window.addEventListener("DOMContentLoaded", async () => {
 
-window.addEventListener("DOMContentLoaded", init);
-
-async function init() {
-
-    console.log("開始");
+    alert("DOM読み込みOK");
 
     try {
 
+        alert("fetch開始");
+
         const response = await fetch("assets/list.json");
+
+        alert("response OK");
 
         const config = await response.json();
 
-        console.log(config);
+        alert("json OK");
 
-        createCharacterList(config);
+        alert(config.characters.length);
 
     } catch (e) {
 
-        console.error(e);
+        alert("エラー");
 
-        alert("list.json が読み込めません");
-
-    }
-
-}
-
-function createCharacterList(config) {
-
-    const list = document.getElementById("characterList");
-
-    if (!list) {
-
-        alert("characterList が見つかりません");
-
-        return;
+        alert(e);
 
     }
 
-    list.innerHTML = "";
-
-    config.characters.forEach((item) => {
-
-        const button = document.createElement("button");
-
-        button.className = "character-card";
-
-        const image = document.createElement("img");
-
-        image.src =
-            "assets/character/" + item.file;
-
-        image.alt = item.name;
-
-        button.appendChild(image);
-
-        list.appendChild(button);
-
-    });
-
-}
+});
