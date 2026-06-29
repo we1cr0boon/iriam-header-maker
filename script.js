@@ -1,108 +1,66 @@
-// =====================================
+// =======================================
 // IRIAM Header Maker
-// script.js Part1
-// =====================================
+// Part1
+// キャラクター一覧だけ作る
+// =======================================
 
-let config;
-
-// ----------------------------
-// 要素取得
-// ----------------------------
-
-const characterList = document.getElementById("characterList");
-const characterImage = document.getElementById("characterImage");
-const backgroundImage = document.getElementById("backgroundImage");
-const overlayImage = document.getElementById("overlayImage");
-
-// ----------------------------
-// 初期化
-// ----------------------------
+window.addEventListener("DOMContentLoaded", init);
 
 async function init() {
 
-    const response = await fetch("assets/list.json");
-    config = await response.json();
+    console.log("開始");
 
-    loadImages();
-    createCharacterList();
+    try {
+
+        const response = await fetch("assets/list.json");
+
+        const config = await response.json();
+
+        console.log(config);
+
+        createCharacterList(config);
+
+    } catch (e) {
+
+        console.error(e);
+
+        alert("list.json が読み込めません");
+
+    }
 
 }
 
-// ----------------------------
-// 固定画像
-// ----------------------------
+function createCharacterList(config) {
 
-function loadImages() {
+    const list = document.getElementById("characterList");
 
-    backgroundImage.src =
-        "assets/background/" + config.background;
+    if (!list) {
 
-    overlayImage.src =
-        "assets/overlay/" + config.overlay;
+        alert("characterList が見つかりません");
 
-}
+        return;
 
-// ----------------------------
-// キャラクター一覧生成
-// ----------------------------
+    }
 
-function createCharacterList() {
+    list.innerHTML = "";
 
-    characterList.innerHTML = "";
-
-    config.characters.forEach((item, index) => {
+    config.characters.forEach((item) => {
 
         const button = document.createElement("button");
 
         button.className = "character-card";
 
-        if (index === 0) {
-            button.classList.add("active");
-        }
+        const image = document.createElement("img");
 
-        const img = document.createElement("img");
-
-        img.src =
+        image.src =
             "assets/character/" + item.file;
 
-        img.alt = item.name;
+        image.alt = item.name;
 
-        button.appendChild(img);
+        button.appendChild(image);
 
-        button.onclick = () => {
-
-            selectCharacter(item.file);
-
-            document
-                .querySelectorAll(".character-card")
-                .forEach(card => card.classList.remove("active"));
-
-            button.classList.add("active");
-
-        };
-
-        characterList.appendChild(button);
+        list.appendChild(button);
 
     });
 
-    // 初期表示
-    selectCharacter(config.characters[0].file);
-
 }
-
-// ----------------------------
-// キャラクター変更
-// ----------------------------
-
-function selectCharacter(file) {
-
-    characterImage.src =
-        "assets/character/" + file;
-
-}
-
-// ----------------------------
-// 起動
-// ----------------------------
-
-init();
