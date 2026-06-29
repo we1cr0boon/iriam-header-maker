@@ -4,25 +4,28 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta
+name="viewport"
+content="width=device-width,initial-scale=1.0">
 
 <title>IRIAM Header Maker</title>
 
-<link rel="stylesheet" href="style.css">
-
-<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+<link
+rel="stylesheet"
+href="style.css">
 
 </head>
 
 <body>
 
-<div class="app">
+<div class="container">
 
-    <!-- ==========================
-         操作パネル
-    =========================== -->
+    <!-- ========================= -->
+    <!-- 左メニュー -->
+    <!-- ========================= -->
 
-    <aside class="panel">
+    <aside class="sidebar">
 
         <h1>IRIAM Header Maker</h1>
 
@@ -30,10 +33,9 @@
 
             <h2>キャラクター</h2>
 
-            <div id="characterList" class="character-list">
-
-                <!-- JavaScriptで自動生成 -->
-
+            <div
+                id="characterList"
+                class="character-list">
             </div>
 
         </section>
@@ -60,15 +62,11 @@
 
             </label>
 
-        </section>
-
-        <section>
-
             <label>
 
                 <input
                     type="checkbox"
-                    id="continuousCheck">
+                    id="continueCheck">
 
                 連続
 
@@ -76,33 +74,29 @@
 
             <input
                 type="number"
-                id="continuousValue"
-                value="12"
+                id="continueCount"
+                value="1"
                 min="1">
-
-        </section>
-
-        <section>
 
             <label>
 
                 <input
                     type="checkbox"
-                    id="countCheck">
+                    id="timesCheck">
 
-                回数
+                回目
 
             </label>
 
             <input
                 type="number"
-                id="countValue"
-                value="12"
+                id="timesCount"
+                value="1"
                 min="1">
 
         </section>
 
-        <button id="downloadBtn">
+        <button id="saveButton">
 
             PNG保存
 
@@ -110,62 +104,44 @@
 
     </aside>
 
-    <!-- ==========================
-         プレビュー
-    =========================== -->
+    <!-- ========================= -->
+    <!-- プレビュー -->
+    <!-- ========================= -->
 
     <main class="preview-area">
 
-        <div class="preview-scale">
+        <div id="preview">
 
-            <div id="preview">
+            <img
+                id="backgroundImage"
+                class="background"
+                src="assets/background/background_1.png">
 
-                <img
+            <img
+                id="characterImage"
+                class="character"
+                src="assets/character/normal_sd_1.png">
 
-                    id="backgroundImage"
+            <img
+                id="overlayImage"
+                class="overlay"
+                src="assets/overlay/overlay_1.png">
 
-                    class="layer"
+            <div
+                id="dateText"
+                class="date-text">
 
-                    src="assets/background/background_1.png"
+                2026.06
 
-                    alt="background">
+            </div>
 
-                <img
+            <div
+                id="badgeText"
+                class="badge-text">
 
-                    id="characterImage"
-
-                    class="layer"
-
-                    src="assets/character/normal_sd_1.png"
-
-                    alt="character">
-
-                <img
-
-                    id="overlayImage"
-
-                    class="layer"
-
-                    src="assets/overlay/overlay_1.png"
-
-                    alt="overlay">
-
-                <div
-                    id="dateText"
-                    class="date-text">
-
-                    2026.06
-
-                </div>
-
-                <div
-                    id="badgeText"
-                    class="badge-text">
-
-                    いつもありがとう！<br>
-                    これからもよろしくね！
-
-                </div>
+                いつもありがとう！
+                <br>
+                これからもよろしくね！
 
             </div>
 
