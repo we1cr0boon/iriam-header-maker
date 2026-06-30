@@ -1,5 +1,6 @@
 /* ==========================================
    IRIAM Header Maker Ver2
+   Part1
 ========================================== */
 
 "use strict";
@@ -12,75 +13,93 @@ let config = {};
 let currentCharacter = null;
 
 /* ===========================
-   DOM取得
+   DOM
 =========================== */
 
 const characterList = document.getElementById("characterList");
 
-const characterImage = document.getElementById("characterImage");
-const backgroundImage = document.getElementById("backgroundImage");
-const overlayImage = document.getElementById("overlayImage");
+const backgroundImage =
+document.getElementById("backgroundImage");
 
-const saveButton = document.getElementById("saveButton");
+const characterImage =
+document.getElementById("characterImage");
 
-const dateInput = document.getElementById("dateInput");
+const overlayImage =
+document.getElementById("overlayImage");
 
-const dateText = document.getElementById("dateText");
-const badgeText = document.getElementById("badgeText");
+const dateText =
+document.getElementById("dateText");
 
-const firstCheck = document.getElementById("firstCheck");
-const continueCheck = document.getElementById("continueCheck");
+const badgeText =
+document.getElementById("badgeText");
 
-const continueCount = document.getElementById("continueCount");
+const dateInput =
+document.getElementById("dateInput");
 
-const timesCheck = document.getElementById("timesCheck");
-const timesCount = document.getElementById("timesCount");
+const firstCheck =
+document.getElementById("firstCheck");
+
+const continueCheck =
+document.getElementById("continueCheck");
+
+const continueCount =
+document.getElementById("continueCount");
+
+const timesCheck =
+document.getElementById("timesCheck");
+
+const timesCount =
+document.getElementById("timesCount");
+
+const saveButton =
+document.getElementById("saveButton");
 
 /* ===========================
    初期化
 =========================== */
 
-window.addEventListener("DOMContentLoaded", init);
+window.addEventListener(
+    "DOMContentLoaded",
+    init
+);
 
 async function init(){
 
     await loadConfig();
 
-    buildCharacterList();
+    createCharacterList();
 
-    bindEvents();
+    registerEvents();
 
     updatePreview();
 
 }
 
 /* ===========================
-   list.json読込
+   list.json
 =========================== */
 
 async function loadConfig(){
 
-    try{
+    const res = await fetch("assets/list.json");
 
-        const res = await fetch("assets/list.json");
+    if(!res.ok){
 
-        if(!res.ok){
+        alert("list.jsonが読み込めません");
 
-            throw new Error("list.json 読み込み失敗");
-
-        }
-
-        config = await res.json();
+        return;
 
     }
 
-    catch(err){
+    config = await res.json();
 
-        console.error(err);
+    backgroundImage.src =
+        "assets/background/" +
+        config.background;
 
-        alert("list.jsonを読み込めませんでした");
-
-    }
+    overlayImage.src =
+        "assets/overlay/" +
+        config.overlay;
 
 }
 
@@ -88,108 +107,124 @@ async function loadConfig(){
    キャラクター一覧
 =========================== */
 
-function buildCharacterList(){
+function createCharacterList(){
 
     characterList.innerHTML = "";
 
     config.characters.forEach((item,index)=>{
 
-        const button = document.createElement("button");
+        const button =
+        document.createElement("button");
 
-        button.className = "character-card";
+        button.className =
+        "character-card";
 
-        button.dataset.index = index;
+        button.dataset.index =
+        index;
 
-        const img = document.createElement("img");
+        const img =
+        document.createElement("img");
 
-        img.src = "assets/character/" + item.file;
+        img.src =
+        "assets/character/" +
+        item.file;
 
-        img.alt = item.name;
+        img.alt =
+        item.name;
 
         button.appendChild(img);
 
-        button.addEventListener("click",()=>{
+        button.onclick = ()=>{
 
             selectCharacter(index);
 
-        });
+        };
 
         characterList.appendChild(button);
 
     });
 
-    selectCharacter(0);
+    if(config.characters.length){
+
+        selectCharacter(0);
+
+    }
 
 }
 
 /* ===========================
-   キャラクター切替
+   キャラ変更
 =========================== */
 
 function selectCharacter(index){
 
-    currentCharacter = config.characters[index];
+    currentCharacter =
+    config.characters[index];
 
     characterImage.src =
-        "assets/character/" + currentCharacter.file;
+    "assets/character/" +
+    currentCharacter.file;
 
     document
-        .querySelectorAll(".character-card")
-        .forEach(card=>{
+    .querySelectorAll(".character-card")
+    .forEach(card=>{
 
-            card.classList.remove("active");
+        card.classList.remove("active");
 
-        });
+    });
 
     document
-        .querySelector(
-            `.character-card[data-index="${index}"]`
-        )
-        .classList.add("active");
+    .querySelector(
+        `.character-card[data-index="${index}"]`
+    )
+    .classList.add("active");
 
     updatePreview();
 
 }
+
 /* ===========================
-   イベント登録
+   イベント
 =========================== */
 
-function bindEvents(){
+function registerEvents(){
 
-    dateInput.addEventListener("input", updatePreview);
+    dateInput.addEventListener(
+        "input",
+        updatePreview
+    );
 
-    firstCheck.addEventListener("change", () => {
+    firstCheck.addEventListener(
+        "change",
+        updatePreview
+    );
 
-        if(firstCheck.checked){
+    continueCheck.addEventListener(
+        "change",
+        updatePreview
+    );
 
-            continueCheck.checked = false;
+    continueCount.addEventListener(
+        "input",
+        updatePreview
+    );
 
-        }
+    timesCheck.addEventListener(
+        "change",
+        updatePreview
+    );
 
-        updatePreview();
+    timesCount.addEventListener(
+        "input",
+        updatePreview
+    );
 
-    });
-
-    continueCheck.addEventListener("change", () => {
-
-        if(continueCheck.checked){
-
-            firstCheck.checked = false;
-
-        }
-
-        updatePreview();
-
-    });
-
-    continueCount.addEventListener("input", updatePreview);
-
-    timesCheck.addEventListener("change", updatePreview);
-
-    timesCount.addEventListener("input", updatePreview);
+    saveButton.addEventListener(
+        "click",
+        savePNG
+    );
 
 }
-
 
 /* ===========================
    プレビュー更新
@@ -200,42 +235,5 @@ function updatePreview(){
     updateDate();
 
     updateBadge();
-
-}
-
-
-/* ===========================
-   日付
-=========================== */
-
-function updateDate(){
-
-    if(!dateInput.value){
-
-        return;
-
-    }
-
-    const date = new Date(dateInput.value);
-
-    const year = date.getFullYear();
-
-    const month =
-        String(date.getMonth()+1).padStart(2,"0");
-
-    dateText.textContent =
-        `${year}.${month}`;
-
-}
-
-
-/* ===========================
-   バッジ
-=========================== */
-
-function updateBadge(){
-    function updateBadge(){
-
-    alert("updateBadge が呼ばれました");
 
 }
