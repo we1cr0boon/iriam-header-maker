@@ -51,7 +51,9 @@ console.log("init開始");
 console.log("list読込成功");
         // ↓↓↓ここを追加
         initUI();
+       console.log("initUI");
         updateTexts();
+       console.log("updateTexts");
         saveButton.addEventListener("click", saveImage);
 
     } catch (error) {
@@ -247,7 +249,11 @@ function loadImage(src){
 =========================== */
 
 async function saveImage(){
-console.log("saveImage");
-    alert("次のPartで保存処理を追加します。");
+async function saveImage(){
 
+    console.log("saveImage 実行");
+
+    alert("保存ボタンOK");
+
+}
 }
