@@ -234,6 +234,7 @@ function updateDate(){
 =========================== */
 
 function updateBadge(){
+    badgeText.style.background = "red";
 
     let text = "";
 
