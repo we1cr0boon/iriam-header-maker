@@ -36,7 +36,7 @@ const timesCount = document.getElementById("timesCount");
 window.addEventListener("DOMContentLoaded", init);
 
 async function init() {
-
+console.log("init開始");
     try {
 
         const response = await fetch("assets/list.json");
@@ -48,7 +48,7 @@ async function init() {
         config = await response.json();
 
         createCharacterList();
-
+console.log("list読込成功");
         // ↓↓↓ここを追加
         initUI();
         updateTexts();
@@ -247,7 +247,7 @@ function loadImage(src){
 =========================== */
 
 async function saveImage(){
-
+console.log("saveImage");
     alert("次のPartで保存処理を追加します。");
 
 }
