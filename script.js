@@ -1,21 +1,28 @@
 /* ==========================================
    IRIAM Header Maker Ver2
-   script.js
 ========================================== */
 
-let config = null;
+"use strict";
+
+/* ===========================
+   グローバル
+=========================== */
+
+let config = {};
 let currentCharacter = null;
 
 /* ===========================
-   要素取得
+   DOM取得
 =========================== */
 
 const characterList = document.getElementById("characterList");
+
 const characterImage = document.getElementById("characterImage");
 const backgroundImage = document.getElementById("backgroundImage");
 const overlayImage = document.getElementById("overlayImage");
 
 const saveButton = document.getElementById("saveButton");
+
 const dateInput = document.getElementById("dateInput");
 
 const dateText = document.getElementById("dateText");
@@ -35,47 +42,57 @@ const timesCount = document.getElementById("timesCount");
 
 window.addEventListener("DOMContentLoaded", init);
 
-async function init() {
-console.log("init開始");
-    try {
+async function init(){
 
-        const response = await fetch("assets/list.json");
+    await loadConfig();
 
-        if (!response.ok) {
-            throw new Error("list.json を読み込めません");
+    buildCharacterList();
+
+    bindEvents();
+
+    updatePreview();
+
+}
+
+/* ===========================
+   list.json読込
+=========================== */
+
+async function loadConfig(){
+
+    try{
+
+        const res = await fetch("assets/list.json");
+
+        if(!res.ok){
+
+            throw new Error("list.json 読み込み失敗");
+
         }
 
-        config = await response.json();
+        config = await res.json();
 
-        createCharacterList();
-console.log("list読込成功");
-        // ↓↓↓ここを追加
-        initUI();
-       console.log("initUI");
-        updateTexts(
-           badgeText.innerHTML = "テスト";
-        );
-       console.log("updateTexts");
-        saveButton.addEventListener("click", saveImage);
+    }
 
-    } catch (error) {
+    catch(err){
 
-        console.error(error);
-        alert("設定ファイルの読み込みに失敗しました。");
+        console.error(err);
+
+        alert("list.jsonを読み込めませんでした");
 
     }
 
 }
 
 /* ===========================
-   キャラクター一覧生成
+   キャラクター一覧
 =========================== */
 
-function createCharacterList() {
+function buildCharacterList(){
 
     characterList.innerHTML = "";
 
-    config.characters.forEach((character, index) => {
+    config.characters.forEach((item,index)=>{
 
         const button = document.createElement("button");
 
@@ -85,12 +102,13 @@ function createCharacterList() {
 
         const img = document.createElement("img");
 
-        img.src = "assets/character/" + character.file;
-        img.alt = character.name;
+        img.src = "assets/character/" + item.file;
+
+        img.alt = item.name;
 
         button.appendChild(img);
 
-        button.addEventListener("click", () => {
+        button.addEventListener("click",()=>{
 
             selectCharacter(index);
 
@@ -108,7 +126,7 @@ function createCharacterList() {
    キャラクター切替
 =========================== */
 
-function selectCharacter(index) {
+function selectCharacter(index){
 
     currentCharacter = config.characters[index];
 
@@ -117,141 +135,139 @@ function selectCharacter(index) {
 
     document
         .querySelectorAll(".character-card")
-        .forEach(card => card.classList.remove("active"));
+        .forEach(card=>{
+
+            card.classList.remove("active");
+
+        });
 
     document
-        .querySelector(`.character-card[data-index="${index}"]`)
-        ?.classList.add("active");
+        .querySelector(
+            `.character-card[data-index="${index}"]`
+        )
+        .classList.add("active");
 
-}/* ===========================
-   UI初期化
+    updatePreview();
+
+}
+/* ===========================
+   イベント登録
 =========================== */
 
-function initUI(){
+function bindEvents(){
 
-    dateInput.addEventListener("input",updateTexts);
+    dateInput.addEventListener("input", updatePreview);
 
-    firstCheck.addEventListener("change",()=>{
+    firstCheck.addEventListener("change", () => {
 
         if(firstCheck.checked){
 
-            continueCheck.checked=false;
+            continueCheck.checked = false;
 
         }
 
-        updateTexts();
+        updatePreview();
 
     });
 
-    continueCheck.addEventListener("change",()=>{
+    continueCheck.addEventListener("change", () => {
 
         if(continueCheck.checked){
 
-            firstCheck.checked=false;
+            firstCheck.checked = false;
 
         }
 
-        updateTexts();
+        updatePreview();
 
     });
 
-    continueCount.addEventListener("input",updateTexts);
+    continueCount.addEventListener("input", updatePreview);
 
-    timesCheck.addEventListener("change",updateTexts);
+    timesCheck.addEventListener("change", updatePreview);
 
-    timesCount.addEventListener("input",updateTexts);
+    timesCount.addEventListener("input", updatePreview);
 
 }
 
 
 /* ===========================
-   テキスト更新
+   プレビュー更新
 =========================== */
 
-function updateTexts(){
+function updatePreview(){
 
-    //----------------------
-    // 日付
-    //----------------------
+    updateDate();
 
-    if(dateInput.value){
+    updateBadge();
 
-        const date=new Date(dateInput.value);
+}
 
-        const y=date.getFullYear();
 
-        const m=String(date.getMonth()+1).padStart(2,"0");
+/* ===========================
+   日付
+=========================== */
 
-        dateText.textContent=`${y}.${m}`;
+function updateDate(){
+
+    if(!dateInput.value){
+
+        return;
 
     }
 
-    //----------------------
-    // バッジ文章
-    //----------------------
+    const date = new Date(dateInput.value);
 
-    let text="";
+    const year = date.getFullYear();
+
+    const month =
+        String(date.getMonth()+1).padStart(2,"0");
+
+    dateText.textContent =
+        `${year}.${month}`;
+
+}
+
+
+/* ===========================
+   バッジ
+=========================== */
+
+function updateBadge(){
+
+    let text = "";
 
     if(firstCheck.checked){
 
-        text+="初めて";
+        text = "初めて";
 
     }
 
-    if(continueCheck.checked){
+    else if(continueCheck.checked){
 
-        text+=continueCount.value+"ヶ月連続";
+        text =
+            `${continueCount.value}ヶ月連続`;
 
     }
 
     if(timesCheck.checked){
 
-        if(text!==""){
-
-            text+="";
-
-        }
-
-        text+=timesCount.value+"回目";
+        text +=
+            `${timesCount.value}回目`;
 
     }
 
     if(text===""){
 
-        text="いつもありがとう！\nこれからもよろしくね！";
+        badgeText.innerHTML =
+`いつもありがとう！<br>これからもよろしくね！`;
 
     }
 
-    badgeText.innerHTML=text.replace(/\n/g,"<br>");
+    else{
 
-}
-/* ===========================
-   画像読込
-=========================== */
+        badgeText.textContent = text;
 
-function loadImage(src){
-
-    return new Promise((resolve,reject)=>{
-
-        const img=new Image();
-
-        img.onload=()=>resolve(img);
-
-        img.onerror=reject;
-
-        img.src=src;
-
-    });
-
-}
-
-
-/* ===========================
-   PNG保存
-=========================== */
-
-async function saveImage(){
-
-    document.body.style.background = "red";
+    }
 
 }
