@@ -249,11 +249,7 @@ function loadImage(src){
 =========================== */
 
 async function saveImage(){
-async function saveImage(){
 
-    console.log("saveImage 実行");
+    document.body.style.background = "red";
 
-    alert("保存ボタンOK");
-
-}
 }
