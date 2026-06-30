@@ -12,6 +12,10 @@ let currentCharacter = null;
 
 const characterList = document.getElementById("characterList");
 const characterImage = document.getElementById("characterImage");
+const backgroundImage = document.getElementById("backgroundImage");
+const overlayImage = document.getElementById("overlayImage");
+
+const saveButton = document.getElementById("saveButton");
 const dateInput = document.getElementById("dateInput");
 
 const dateText = document.getElementById("dateText");
@@ -48,6 +52,7 @@ async function init() {
         // ↓↓↓ここを追加
         initUI();
         updateTexts();
+        saveButton.addEventListener("click", saveImage);
 
     } catch (error) {
 
@@ -214,5 +219,35 @@ function updateTexts(){
     }
 
     badgeText.innerHTML=text.replace(/\n/g,"<br>");
+
+}
+/* ===========================
+   画像読込
+=========================== */
+
+function loadImage(src){
+
+    return new Promise((resolve,reject)=>{
+
+        const img=new Image();
+
+        img.onload=()=>resolve(img);
+
+        img.onerror=reject;
+
+        img.src=src;
+
+    });
+
+}
+
+
+/* ===========================
+   PNG保存
+=========================== */
+
+async function saveImage(){
+
+    alert("次のPartで保存処理を追加します。");
 
 }
