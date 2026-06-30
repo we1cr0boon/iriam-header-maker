@@ -52,7 +52,9 @@ console.log("list読込成功");
         // ↓↓↓ここを追加
         initUI();
        console.log("initUI");
-        updateTexts();
+        updateTexts(
+           badgeText.innerHTML = "テスト";
+        );
        console.log("updateTexts");
         saveButton.addEventListener("click", saveImage);
 
