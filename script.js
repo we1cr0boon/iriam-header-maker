@@ -234,41 +234,8 @@ function updateDate(){
 =========================== */
 
 function updateBadge(){
-    badgeText.style.background = "red";
+    function updateBadge(){
 
-    let text = "";
-
-    if(firstCheck.checked){
-
-        text = "初めて";
-
-    }
-
-    else if(continueCheck.checked){
-
-        text =
-            `${continueCount.value}ヶ月連続`;
-
-    }
-
-    if(timesCheck.checked){
-
-        text +=
-            `${timesCount.value}回目`;
-
-    }
-
-    if(text===""){
-
-        badgeText.innerHTML =
-`いつもありがとう！<br>これからもよろしくね！`;
-
-    }
-
-    else{
-
-        badgeText.textContent = text;
-
-    }
+    alert("updateBadge が呼ばれました");
 
 }
