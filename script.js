@@ -237,3 +237,140 @@ function updatePreview(){
     updateBadge();
 
 }
+/* ==========================================
+   Part2
+   日付・バッジ・プレビュー
+========================================== */
+
+/* ===========================
+   日付更新
+=========================== */
+
+function updateDate(){
+
+    if(dateInput.value){
+
+        const [year,month] = dateInput.value.split("-");
+
+        dateText.textContent =
+        `${year}.${month}`;
+
+    }
+
+    else{
+
+        const today = new Date();
+
+        const year = today.getFullYear();
+
+        const month =
+        String(today.getMonth()+1)
+        .padStart(2,"0");
+
+        dateText.textContent =
+        `${year}.${month}`;
+
+    }
+
+}
+
+/* ===========================
+   バッジ更新
+=========================== */
+
+function updateBadge(){
+
+    let text = "";
+
+    if(firstCheck.checked){
+
+        continueCheck.checked = false;
+
+        text = "初めて";
+
+    }
+
+    else{
+
+        if(continueCheck.checked){
+
+            text =
+            `${continueCount.value}ヶ月連続`;
+
+        }
+
+        if(timesCheck.checked){
+
+            text +=
+            `${timesCount.value}回目`;
+
+        }
+
+    }
+
+    if(text===""){
+
+        badgeText.innerHTML =
+        "いつもありがとう！<br>これからもよろしくね！";
+
+    }
+
+    else{
+
+        badgeText.textContent = text;
+
+    }
+
+}
+
+/* ===========================
+   共通イベント
+=========================== */
+
+firstCheck.addEventListener("change",()=>{
+
+    if(firstCheck.checked){
+
+        continueCheck.checked = false;
+
+    }
+
+    updateBadge();
+
+});
+
+continueCheck.addEventListener("change",()=>{
+
+    if(continueCheck.checked){
+
+        firstCheck.checked = false;
+
+    }
+
+    updateBadge();
+
+});
+
+timesCheck.addEventListener("change",()=>{
+
+    updateBadge();
+
+});
+
+continueCount.addEventListener("input",()=>{
+
+    updateBadge();
+
+});
+
+timesCount.addEventListener("input",()=>{
+
+    updateBadge();
+
+});
+
+/* ===========================
+   初期表示
+=========================== */
+
+updatePreview();
