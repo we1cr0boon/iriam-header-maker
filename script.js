@@ -3,10 +3,10 @@ const ctx = canvas.getContext('2d');
 const thumbnailList = document.getElementById('thumbnail-list');
 const downloadBtn = document.getElementById('downloadBtn');
 const msgChecks = document.querySelectorAll('.msg-check');
+const numInputs = document.querySelectorAll('.num-input');
 
 let config = {};
 const images = { bg: new Image(), overlay: new Image(), char: new Image() };
-
 const now = new Date();
 const formattedDate = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}`;
 
@@ -15,6 +15,10 @@ async function init() {
     config = await res.json();
     canvas.width = config.canvas.width;
     canvas.height = config.canvas.height;
+    
+    // 画像ロード時の描画設定
+    [images.bg, images.overlay, images.char].forEach(img => img.onload = draw);
+    
     images.bg.src = `assets/background/${config.background}`;
     images.overlay.src = `assets/overlay/${config.overlay}`;
     
@@ -26,19 +30,28 @@ async function init() {
             document.querySelectorAll('.char-thumbnail').forEach(t => t.classList.remove('selected'));
             img.classList.add('selected');
             images.char.src = img.src;
-            images.char.onload = draw;
         };
         thumbnailList.appendChild(img);
     });
-    [images.bg, images.overlay].forEach(img => img.onload = draw);
 }
 
-msgChecks.forEach(chk => {
+// チェックボックスと数字入力の連動
+msgChecks.forEach((chk, idx) => {
     chk.onchange = () => {
-        if (chk.checked) msgChecks.forEach(other => { if (other !== chk) other.checked = false; });
+        if (chk.checked) {
+            msgChecks.forEach((other, i) => {
+                if (other !== chk) other.checked = false;
+                if (numInputs[i]) numInputs[i].style.display = 'none';
+            });
+            if (numInputs[idx]) numInputs[idx].style.display = 'inline-block';
+        } else {
+            if (numInputs[idx]) numInputs[idx].style.display = 'none';
+        }
         draw();
     };
 });
+
+numInputs.forEach(n => n.oninput = draw);
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -53,8 +66,8 @@ function draw() {
 
     let msg = "いつもありがとう！\nこれからもよろしくね！";
     if (document.getElementById('check1').checked) msg = "初めて";
-    else if (document.getElementById('check2').checked) msg = "○ヶ月連続";
-    else if (document.getElementById('check3').checked) msg = "○回目";
+    else if (document.getElementById('check2').checked) msg = document.getElementById('num2').value + "ヶ月連続";
+    else if (document.getElementById('check3').checked) msg = document.getElementById('num3').value + "回目";
 
     msg.split('\n').forEach((line, i) => ctx.fillText(line, 2400, 400 + (i * 100)));
 }
