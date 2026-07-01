@@ -60,15 +60,12 @@ body { margin: 0; padding: 0; font-family: sans-serif; height: 100vh; overflow: 
 
 /* プレビュー用Canvasの設定 */
 #mainCanvas {
-    /* 重要: アスペクト比(2560:1092)を維持しつつ縮小表示 */
     max-width: 100%;
-    max-height: 100%;
-    width: auto;
     height: auto;
-    object-fit: contain;
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border: 2px solid #ccc; /* 枠線が必要なら残す、不要ならnone */
+    border-radius: 0;      /* ここを0に設定 */
+    box-shadow: none;      /* 影も不要なら削除 */
 }
-
 /* コントロールエリア（文字入力など） */
 .controls {
     background: white;
