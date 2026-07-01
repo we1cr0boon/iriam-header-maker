@@ -1,77 +1,13 @@
-/* ベース設定 */
-* { box-sizing: border-box; }
-body { margin: 0; padding: 0; font-family: sans-serif; height: 100vh; overflow: hidden; }
-
+body { margin: 0; font-family: sans-serif; height: 100vh; overflow: hidden; }
 .app-container { display: flex; width: 100vw; height: 100vh; }
 
-/* 左側パネル：選択肢 */
-#selector-panel {
-    width: 300px; /* 左側の幅 */
-    background: #f4f4f4;
-    border-right: 1px solid #ccc;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    overflow-y: auto; /* 選択肢が多い場合のスクロール */
-}
+#selector-panel { width: 300px; background: #f4f4f4; padding: 20px; overflow-y: auto; }
+#preview-panel { flex: 1; background: #eee; display: flex; align-items: center; justify-content: center; padding: 20px; }
 
-#thumbnail-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-top: 20px;
-}
+.canvas-wrapper { width: 100%; display: flex; justify-content: center; }
+#mainCanvas { max-width: 100%; height: auto; border: 2px solid #ccc; border-radius: 0; }
 
-.char-thumbnail {
-    width: 100%;
-    cursor: pointer;
-    border: 3px solid transparent;
-    border-radius: 8px;
-    transition: all 0.2s;
-}
-
-.char-thumbnail:hover { transform: scale(1.02); }
-
-/* 選択中のサムネイルのスタイル */
-.char-thumbnail.selected {
-    border-color: #007bff;
-    box-shadow: 0 0 10px rgba(0,123,255,0.5);
-}
-
-/* 右側パネル：プレビュー */
-#preview-panel {
-    flex: 1; /* 残りのスペースをすべて使用 */
-    display: flex;
-    flex-direction: column;
-    background: #eee;
-    padding: 20px;
-}
-
-/* Canvasを画面内に収めるためのラッパー */
-.canvas-wrapper {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden; /* はみ出した分は隠す */
-    position: relative;
-    margin-bottom: 20px;
-}
-
-/* プレビュー用Canvasの設定 */
-#mainCanvas {
-    max-width: 100%;
-    height: auto;
-    border: 2px solid #ccc; /* 枠線が必要なら残す、不要ならnone */
-    border-radius: 0;      /* ここを0に設定 */
-    box-shadow: none;      /* 影も不要なら削除 */
-}
-/* コントロールエリア（文字入力など） */
-.controls {
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-}
-textarea { width: 100%; padding: 10px; margin-top: 5px; resize: vertical; }
-#downloadBtn { margin-top: 10px; width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
-#downloadBtn:hover { background: #218838; }
+.char-thumbnail { width: 100px; cursor: pointer; margin: 5px; border: 3px solid transparent; }
+.char-thumbnail.selected { border-color: #007bff; }
+.msg-controls { margin-bottom: 20px; }
+#downloadBtn { width: 100%; padding: 10px; background: #28a745; color: white; border: none; cursor: pointer; }
