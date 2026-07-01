@@ -1,376 +1,111 @@
-/* ==========================================
-   IRIAM Header Maker Ver2
-   Part1
-========================================== */
-
-"use strict";
-
-/* ===========================
-   グローバル
-=========================== */
+const canvas = document.getElementById('mainCanvas');
+const ctx = canvas.getContext('2d');
+const textInput = document.getElementById('text-input');
+const downloadBtn = document.getElementById('downloadBtn');
+const thumbnailList = document.getElementById('thumbnail-list');
 
 let config = {};
-let currentCharacter = null;
+const images = {
+    bg: new Image(),
+    overlay: new Image(),
+    char: new Image()
+};
 
-/* ===========================
-   DOM
-=========================== */
+// 初期化処理
+async function init() {
+    try {
+        const res = await fetch('list.json');
+        config = await res.json();
 
-const characterList = document.getElementById("characterList");
+        // キャンバスサイズをJSONから設定（内部解像度）
+        canvas.width = config.canvas.width;
+        canvas.height = config.canvas.height;
 
-const backgroundImage =
-document.getElementById("backgroundImage");
+        // 背景とオーバーレイのパス設定
+        images.bg.src = `assets/background/${config.background}`;
+        images.overlay.src = `assets/overlay/${config.overlay}`;
 
-const characterImage =
-document.getElementById("characterImage");
+        // サムネイル一覧の生成
+        generateThumbnailList();
 
-const overlayImage =
-document.getElementById("overlayImage");
+        // 画像読み込み後に描画
+        images.bg.onload = draw;
+        images.overlay.onload = draw;
 
-const dateText =
-document.getElementById("dateText");
-
-const badgeText =
-document.getElementById("badgeText");
-
-const dateInput =
-document.getElementById("dateInput");
-
-const firstCheck =
-document.getElementById("firstCheck");
-
-const continueCheck =
-document.getElementById("continueCheck");
-
-const continueCount =
-document.getElementById("continueCount");
-
-const timesCheck =
-document.getElementById("timesCheck");
-
-const timesCount =
-document.getElementById("timesCount");
-
-const saveButton =
-document.getElementById("saveButton");
-
-/* ===========================
-   初期化
-=========================== */
-
-window.addEventListener(
-    "DOMContentLoaded",
-    init
-);
-
-async function init(){
-
-    await loadConfig();
-
-    createCharacterList();
-
-    registerEvents();
-
-    updatePreview();
-
-}
-
-/* ===========================
-   list.json
-=========================== */
-
-async function loadConfig(){
-
-    const res = await fetch("assets/list.json");
-
-    if(!res.ok){
-
-        alert("list.jsonが読み込めません");
-
-        return;
-
+    } catch (error) {
+        console.error("設定の読み込みに失敗しました:", error);
     }
-
-    config = await res.json();
-
-    backgroundImage.src =
-        "assets/background/" +
-        config.background;
-
-    overlayImage.src =
-        "assets/overlay/" +
-        config.overlay;
-
 }
 
-/* ===========================
-   キャラクター一覧
-=========================== */
-
-function createCharacterList(){
-
-    characterList.innerHTML = "";
-
-    config.characters.forEach((item,index)=>{
-
-        const button =
-        document.createElement("button");
-
-        button.className =
-        "character-card";
-
-        button.dataset.index =
-        index;
-
-        const img =
-        document.createElement("img");
-
-        img.src =
-        "assets/character/" +
-        item.file;
-
-        img.alt =
-        item.name;
-
-        button.appendChild(img);
-
-        button.onclick = ()=>{
-
-            selectCharacter(index);
-
-        };
-
-        characterList.appendChild(button);
-
-    });
-
-    if(config.characters.length){
-
-        selectCharacter(0);
-
-    }
-
-}
-
-/* ===========================
-   キャラ変更
-=========================== */
-
-function selectCharacter(index){
-
-    currentCharacter =
-    config.characters[index];
-
-    characterImage.src =
-    "assets/character/" +
-    currentCharacter.file;
-
-    document
-    .querySelectorAll(".character-card")
-    .forEach(card=>{
-
-        card.classList.remove("active");
-
-    });
-
-    document
-    .querySelector(
-        `.character-card[data-index="${index}"]`
-    )
-    .classList.add("active");
-
-    updatePreview();
-
-}
-
-/* ===========================
-   イベント
-=========================== */
-
-function registerEvents(){
-
-    dateInput.addEventListener(
-        "input",
-        updatePreview
-    );
-
-    firstCheck.addEventListener(
-        "change",
-        updatePreview
-    );
-
-    continueCheck.addEventListener(
-        "change",
-        updatePreview
-    );
-
-    continueCount.addEventListener(
-        "input",
-        updatePreview
-    );
-
-    timesCheck.addEventListener(
-        "change",
-        updatePreview
-    );
-
-    timesCount.addEventListener(
-        "input",
-        updatePreview
-    );
-
-    saveButton.addEventListener(
-        "click",
-        savePNG
-    );
-
-}
-
-/* ===========================
-   プレビュー更新
-=========================== */
-
-function updatePreview(){
-
-    updateDate();
-
-    updateBadge();
-
-}
-/* ==========================================
-   Part2
-   日付・バッジ・プレビュー
-========================================== */
-
-/* ===========================
-   日付更新
-=========================== */
-
-function updateDate(){
-
-    if(dateInput.value){
-
-        const [year,month] = dateInput.value.split("-");
-
-        dateText.textContent =
-        `${year}.${month}`;
-
-    }
-
-    else{
-
-        const today = new Date();
-
-        const year = today.getFullYear();
-
-        const month =
-        String(today.getMonth()+1)
-        .padStart(2,"0");
-
-        dateText.textContent =
-        `${year}.${month}`;
-
-    }
-
-}
-
-/* ===========================
-   バッジ更新
-=========================== */
-
-function updateBadge(){
-
-    let text = "";
-
-    if(firstCheck.checked){
-
-        continueCheck.checked = false;
-
-        text = "初めて";
-
-    }
-
-    else{
-
-        if(continueCheck.checked){
-
-            text =
-            `${continueCount.value}ヶ月連続`;
-
+// サムネイルボタンを生成する関数
+function generateThumbnailList() {
+    config.characters.forEach((c, index) => {
+        const img = document.createElement('img');
+        img.src = `assets/character/${c.file}`;
+        img.alt = c.name;
+        img.className = 'char-thumbnail';
+        
+        // クリックイベント
+        img.addEventListener('click', () => {
+            // 選択状態の見た目を更新
+            document.querySelectorAll('.char-thumbnail').forEach(t => t.classList.remove('selected'));
+            img.classList.add('selected');
+
+            // 選択されたキャラクター画像を設定して描画
+            images.char.src = img.src;
+            images.char.onload = draw;
+        });
+
+        // リストに追加
+        thumbnailList.appendChild(img);
+
+        // 初期選択（最初の画像を自動選択状態にする場合）
+        if (index === 0) {
+            // img.click(); // 自動でクリックイベントを発生させる
         }
-
-        if(timesCheck.checked){
-
-            text +=
-            `${timesCount.value}回目`;
-
-        }
-
-    }
-
-    if(text===""){
-
-        badgeText.innerHTML =
-        "いつもありがとう！<br>これからもよろしくね！";
-
-    }
-
-    else{
-
-        badgeText.textContent = text;
-
-    }
-
+    });
 }
 
-/* ===========================
-   共通イベント
-=========================== */
+// 描画処理（ご指定のレイヤー順）
+function draw() {
+    // 1. キャンバスをクリア
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-firstCheck.addEventListener("change",()=>{
+    // 2. 背景 (最下層)
+    if (images.bg.complete) ctx.drawImage(images.bg, 0, 0);
 
-    if(firstCheck.checked){
-
-        continueCheck.checked = false;
-
+    // 3. キャラクター（選択されたものがあれば描画）
+    if (images.char.complete && images.char.src) {
+        // フルサイズ(2560x1092)で重ねる
+        ctx.drawImage(images.char, 0, 0);
     }
 
-    updateBadge();
+    // 4. オーバーレイ
+    if (images.overlay.complete) ctx.drawImage(images.overlay, 0, 0);
 
+    // 5. 文字 (最上層)
+    ctx.fillStyle = '#FFFFFF'; // 例: 白文字
+    ctx.font = 'bold 80px sans-serif'; // フォントサイズ固定
+    ctx.textAlign = 'right';
+    
+    const lines = textInput.value.split('\n');
+    // 右上の配置に合わせて調整してください (現在の設定は右端から少し内側)
+    lines.forEach((line, i) => {
+        ctx.fillText(line, 2400, 300 + (i * 100)); 
+    });
+}
+
+// テキスト入力時の再描画
+textInput.addEventListener('input', draw);
+
+// PNG保存処理（常にフル解像度で出力）
+downloadBtn.addEventListener('click', () => {
+    const dataURL = canvas.toDataURL('image/png', 1.0);
+    const link = document.createElement('a');
+    link.download = 'generated_image.png';
+    link.href = dataURL;
+    link.click();
 });
 
-continueCheck.addEventListener("change",()=>{
-
-    if(continueCheck.checked){
-
-        firstCheck.checked = false;
-
-    }
-
-    updateBadge();
-
-});
-
-timesCheck.addEventListener("change",()=>{
-
-    updateBadge();
-
-});
-
-continueCount.addEventListener("input",()=>{
-
-    updateBadge();
-
-});
-
-timesCount.addEventListener("input",()=>{
-
-    updateBadge();
-
-});
-
-/* ===========================
-   初期表示
-=========================== */
-
-updatePreview();
+// アプリ開始
+init();
