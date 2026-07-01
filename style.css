@@ -1,284 +1,80 @@
-/* ==========================================
-   IRIAM Header Maker Ver2
-========================================== */
+/* ベース設定 */
+* { box-sizing: border-box; }
+body { margin: 0; padding: 0; font-family: sans-serif; height: 100vh; overflow: hidden; }
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+.app-container { display: flex; width: 100vw; height: 100vh; }
+
+/* 左側パネル：選択肢 */
+#selector-panel {
+    width: 300px; /* 左側の幅 */
+    background: #f4f4f4;
+    border-right: 1px solid #ccc;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto; /* 選択肢が多い場合のスクロール */
 }
 
-body{
-
-    font-family:sans-serif;
-    background:#f5f5f5;
-
+#thumbnail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
 }
 
-.container{
-
-    display:flex;
-    gap:24px;
-
-    padding:24px;
-
+.char-thumbnail {
+    width: 100%;
+    cursor: pointer;
+    border: 3px solid transparent;
+    border-radius: 8px;
+    transition: all 0.2s;
 }
 
-/* ===========================
-   左メニュー
-=========================== */
+.char-thumbnail:hover { transform: scale(1.02); }
 
-.sidebar{
-
-    width:360px;
-
-    background:white;
-
-    border-radius:16px;
-
-    padding:24px;
-
+/* 選択中のサムネイルのスタイル */
+.char-thumbnail.selected {
+    border-color: #007bff;
+    box-shadow: 0 0 10px rgba(0,123,255,0.5);
 }
 
-.sidebar h1{
-
-    margin-bottom:24px;
-
+/* 右側パネル：プレビュー */
+#preview-panel {
+    flex: 1; /* 残りのスペースをすべて使用 */
+    display: flex;
+    flex-direction: column;
+    background: #eee;
+    padding: 20px;
 }
 
-.sidebar section{
-
-    margin-bottom:24px;
-
+/* Canvasを画面内に収めるためのラッパー */
+.canvas-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* はみ出した分は隠す */
+    position: relative;
+    margin-bottom: 20px;
 }
 
-.sidebar h2{
-
-    margin-bottom:12px;
-
+/* プレビュー用Canvasの設定 */
+#mainCanvas {
+    /* 重要: アスペクト比(2560:1092)を維持しつつ縮小表示 */
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
-.sidebar label{
-
-    display:block;
-
-    margin:12px 0;
-
+/* コントロールエリア（文字入力など） */
+.controls {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
 }
-
-.sidebar input[type="month"],
-.sidebar input[type="number"]{
-
-    width:100%;
-
-    padding:10px;
-
-    margin-top:8px;
-
-}
-
-/* ===========================
-   キャラクター一覧
-=========================== */
-
-.character-list{
-
-    display:grid;
-
-    grid-template-columns:repeat(2,1fr);
-
-    gap:12px;
-
-}
-
-.character-card{
-
-    border:none;
-
-    border-radius:12px;
-
-    overflow:hidden;
-
-    cursor:pointer;
-
-    background:#eeeeee;
-
-    aspect-ratio:1.6/1;
-
-}
-
-.character-card img{
-
-    width:200%;
-
-    height:100%;
-
-    object-fit:cover;
-
-    object-position:left center;
-
-    display:block;
-
-}
-
-.character-card.active{
-
-    outline:4px solid #46c98b;
-
-}
-
-/* ===========================
-   ボタン
-=========================== */
-
-#saveButton{
-
-    width:100%;
-
-    padding:16px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#46c98b;
-
-    color:white;
-
-    font-size:18px;
-
-    cursor:pointer;
-
-}
-
-/* ===========================
-   プレビュー
-=========================== */
-
-.preview-area{
-
-    flex:1;
-
-}
-
-#preview{
-
-    position:relative;
-
-    width:100%;
-
-    aspect-ratio:2560/1092;
-
-    background:black;
-
-    overflow:hidden;
-
-    border-radius:16px;
-
-}
-
-/* ===========================
-   背景
-=========================== */
-
-.background{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-}
-
-/* ===========================
-   キャラクター
-=========================== */
-
-.character{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-}
-
-/* ===========================
-   オーバーレイ
-=========================== */
-
-.overlay{
-
-    position:absolute;
-
-    inset:0;
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:cover;
-
-    pointer-events:none;
-
-}
-
-/* ===========================
-   テキスト
-=========================== */
-
-.date-text{
-
-    position:absolute;
-
-    top:28px;
-
-    right:42px;
-
-    color:white;
-
-}
-
-.badge-text{
-
-    position:absolute;
-
-    left:1550px;
-
-    top:820px;
-
-    color:white;
-
-    text-align:center;
-
-}
-
-/* ===========================
-   スマホ
-=========================== */
-
-@media(max-width:900px){
-
-.container{
-
-    flex-direction:column;
-
-}
-
-.sidebar{
-
-    width:100%;
-
-}
-
-}
+textarea { width: 100%; padding: 10px; margin-top: 5px; resize: vertical; }
+#downloadBtn { margin-top: 10px; width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
+#downloadBtn:hover { background: #218838; }
