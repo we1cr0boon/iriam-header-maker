@@ -1,32 +1,11 @@
-<!DOCTYPE html>
-<html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Header Maker</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="app-container">
-        <div id="selector-panel">
-            <h2>キャラクター選択</h2>
-            <div id="thumbnail-list"></div>
-            
-            <h3>メッセージ選択</h3>
-            <div class="msg-controls">
-                <label><input type="checkbox" id="check1" class="msg-check"> 初めて</label><br>
-                <label><input type="checkbox" id="check2" class="msg-check"> ○ヶ月連続</label><br>
-                <label><input type="checkbox" id="check3" class="msg-check"> ○回目</label>
-            </div>
-            <button id="downloadBtn">PNGとして保存</button>
-        </div>
-
-        <div id="preview-panel">
-            <div class="canvas-wrapper">
-                <canvas id="mainCanvas"></canvas>
-            </div>
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+<div class="msg-controls">
+    <label><input type="checkbox" id="check1" class="msg-check"> 初めて</label><br>
+    
+    <label><input type="checkbox" id="check2" class="msg-check"> 
+        <input type="number" id="num2" class="num-input" style="display:none; width:50px;"> ヶ月連続
+    </label><br>
+    
+    <label><input type="checkbox" id="check3" class="msg-check"> 
+        <input type="number" id="num3" class="num-input" style="display:none; width:50px;"> 回目
+    </label>
+</div>
