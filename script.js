@@ -10,15 +10,16 @@ const images = { bg: new Image(), overlay: new Image(), char: new Image() };
 const now = new Date();
 const formattedDate = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2, '0')}`;
 
-// 描画のメイン関数
+// 描画処理（画像がロードされた時に動く）
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     
-    // 画像が読み込まれていれば描画、なければ無視する安全設計
-    if (images.bg.complete) ctx.drawImage(images.bg, 0, 0);
-    if (images.char.complete && images.char.src) ctx.drawImage(images.char, 0, 0);
-    if (images.overlay.complete) ctx.drawImage(images.overlay, 0, 0);
+    // 背景・キャラ・オーバーレイを描画
+    ctx.drawImage(images.bg, 0, 0);
+    ctx.drawImage(images.char, 0, 0);
+    ctx.drawImage(images.overlay, 0, 0);
 
+    // 文字
     ctx.fillStyle = '#FFFFFF';
     ctx.font = 'bold 80px sans-serif';
     ctx.textAlign = 'right';
@@ -32,39 +33,33 @@ function draw() {
 }
 
 async function init() {
-    try {
-        const res = await fetch('list.json');
-        config = await res.json();
-        canvas.width = config.canvas.width;
-        canvas.height = config.canvas.height;
-        
-        images.bg.src = `assets/background/${config.background}`;
-        images.overlay.src = `assets/overlay/${config.overlay}`;
-        
-        // 全画像ロード後の再描画
-        [images.bg, images.overlay].forEach(img => img.onload = draw);
-        
-        config.characters.forEach(c => {
-            const img = document.createElement('img');
-            img.src = `assets/character/${c.file}`;
-            img.className = 'char-thumbnail';
-            img.onclick = () => {
-                document.querySelectorAll('.char-thumbnail').forEach(t => t.classList.remove('selected'));
-                img.classList.add('selected');
-                images.char.src = img.src;
-                images.char.onload = draw;
-            };
-            thumbnailList.appendChild(img);
-        });
-
-        // 最初の状態を描画
-        draw();
-    } catch (e) {
-        console.error("エラー発生:", e);
-    }
+    const res = await fetch('list.json');
+    config = await res.json();
+    canvas.width = config.canvas.width;
+    canvas.height = config.canvas.height;
+    
+    // 画像ロード設定
+    images.bg.onload = draw;
+    images.overlay.onload = draw;
+    images.char.onload = draw;
+    
+    images.bg.src = `assets/background/${config.background}`;
+    images.overlay.src = `assets/overlay/${config.overlay}`;
+    
+    config.characters.forEach(c => {
+        const img = document.createElement('img');
+        img.src = `assets/character/${c.file}`;
+        img.className = 'char-thumbnail';
+        img.onclick = () => {
+            document.querySelectorAll('.char-thumbnail').forEach(t => t.classList.remove('selected'));
+            img.classList.add('selected');
+            images.char.src = img.src;
+        };
+        thumbnailList.appendChild(img);
+    });
 }
 
-// 動作設定
+// チェック関連
 msgChecks.forEach((chk, idx) => {
     chk.onchange = () => {
         if (chk.checked) {
